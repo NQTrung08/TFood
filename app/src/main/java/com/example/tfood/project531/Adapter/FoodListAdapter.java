@@ -2,6 +2,7 @@ package com.example.tfood.project531.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,17 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull FoodListAdapter.ViewHolder holder, int position) {
         Food food = foodArrayList.get(position);
-        holder.foodName.setText(food.getFoodName());
+
+        String foodName = food.getFoodName();
+        String foodNamesString = TextUtils.join(", ", new String[]{foodName}); // Kết hợp tất cả tên sản phẩm
+
+        // Kiểm tra chiều dài và cắt nếu cần
+        if (foodNamesString.length() > 17) {
+            foodNamesString = foodNamesString.substring(0, 15) + " ...";
+        }
+        holder.foodName.setText(foodNamesString);
+//        holder.foodName.setText(food.getFoodName());
+
         holder.fee.setText("$ " + food.getFee());
         String picFoodUrl = food.getFoodPic();
         Glide.with(holder.itemView.getContext())
@@ -60,7 +71,13 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHo
             public void onClick(View view) {
                 Context context = view.getContext();
                 Intent foodDetailIntent = new Intent(context, ShowDetailActivity.class);
-                foodDetailIntent.putExtra("FoodId", "0" + String.valueOf(food.getFoodId())); // Gửi ID của sản phẩm
+                if(food.getFoodId() <= 9) {
+                    foodDetailIntent.putExtra("FoodId", "0" + String.valueOf(food.getFoodId()));
+                } else {
+
+                    foodDetailIntent.putExtra("FoodId", String.valueOf(food.getFoodId()));
+
+                }// Gửi ID của sản phẩm
                 context.startActivity(foodDetailIntent);
             }
         });

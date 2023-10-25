@@ -56,7 +56,11 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
             public void onClick(View view) {
                 Context context = view.getContext();
                 Intent foodDetailIntent = new Intent(context, ShowDetailActivity.class);
-                foodDetailIntent.putExtra("FoodId", "0" + String.valueOf(food.getFoodId())); // Gửi ID của sản phẩm
+                if(food.getFoodId() <= 9) {
+                    foodDetailIntent.putExtra("FoodId", "0" + String.valueOf(food.getFoodId()));
+                } else {
+                    foodDetailIntent.putExtra("FoodId", String.valueOf(food.getFoodId()));
+                }// Gửi ID của sản phẩm
                 context.startActivity(foodDetailIntent);
             }
         });

@@ -23,9 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditProfileActivity extends AppCompatActivity {
     private OnDataChangeListener onDataChangeListener;
-    EditText editName, editPass;
+    EditText editName, editPass, editAddress;
     Button editSaveBtn;
-    String phoneUser, nameUser, passUser;
+    String phoneUser, nameUser, passUser, addressUser;
     DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editName = findViewById(R.id.edit_name);
         editPass = findViewById(R.id.edit_pass);
         editSaveBtn = findViewById(R.id.btnSave);
+        editAddress = findViewById(R.id.edit_address);
         databaseReference = FirebaseDatabase.getInstance().getReference("User");
 
         showData();
@@ -42,10 +43,11 @@ public class EditProfileActivity extends AppCompatActivity {
         editSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isNameChange() || isPassChange()){
+                if(isNameChange() || isPassChange() || isAddressChange()){
                     Toast.makeText(EditProfileActivity.this, "Saved",Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(EditProfileActivity.this, "No Changes Found",Toast.LENGTH_SHORT).show();
+                    finish();
 
                 }
             }
@@ -54,22 +56,47 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
     public void setOnDataChangeListener(OnDataChangeListener listener) {
-
         this.onDataChangeListener = listener;
-
     }
+
+    public boolean isAddressChange() {
+        String newAddress = editAddress.getText().toString();
+
+        if (addressUser != null && !addressUser.equals(newAddress)) {
+            databaseReference.child(phoneUser).child("address").setValue(newAddress);
+            addressUser = newAddress;
+
+            if (onDataChangeListener != null) {
+                onDataChangeListener.onDataChanged();
+            }
+
+            return true;
+        } else if (addressUser == null && !newAddress.isEmpty()) {
+            // Địa chỉ trống và nhập địa chỉ mới
+            databaseReference.child(phoneUser).child("address").setValue(newAddress);
+            addressUser = newAddress;
+
+            if (onDataChangeListener != null) {
+                onDataChangeListener.onDataChanged();
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean isNameChange() {
         if (nameUser != null && !nameUser.equals(editName.getText().toString())) {
             databaseReference.child(phoneUser).child("name").setValue(editName.getText().toString());
             nameUser = editName.getText().toString();
-//            reloadUserData();
-//******************
+
             if (onDataChangeListener != null) {
 
                 onDataChangeListener.onDataChanged();
 
             }
-//            *************************
+
             return true;
         } else {
             return false;
@@ -85,8 +112,6 @@ public class EditProfileActivity extends AppCompatActivity {
             databaseReference.child(phoneUser).child("password").setValue(editPass.getText().toString());
             passUser = editPass.getText().toString();
 //            reloadUserData();
-//            startActivity(new Intent(EditProfileActivity.this, LoginActivity.class));
-//******************
 
             // Delay 2 giây trước khi chuyển sang màn hình đăng nhập
             new Handler().postDelayed(new Runnable() {
@@ -101,7 +126,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 onDataChangeListener.onDataChanged();
             }
-//            *************************
+
             return true;
         } else {
             return false;
@@ -115,11 +140,13 @@ public class EditProfileActivity extends AppCompatActivity {
              nameUser = intent.getStringExtra("name");
              passUser = intent.getStringExtra("pass");
              phoneUser = intent.getStringExtra("phone");
+             addressUser = intent.getStringExtra("address");
 
 
             // Hiển thị thông tin người dùng trong giao diện
             editName.setText(nameUser);
             editPass.setText(passUser);
+            editAddress.setText(addressUser);
 
         }
     }
@@ -133,21 +160,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     String nameFromDB = snapshot.child("name").getValue(String.class);
                     String passFromDB = snapshot.child("password").getValue(String.class);
+                    String addressFromDB = snapshot.child("address").getValue(String.class);
 
                     // Cập nhật giao diện với dữ liệu từ cơ sở dữ liệu
                     editName.setText(nameFromDB);
                     editPass.setText(passFromDB);
+                    editAddress.setText(addressFromDB);
 
                     // Gửi broadcast thông báo rằng dữ liệu đã được thay đổi
                     Intent dataChangedIntent = new Intent("DATA_CHANGED");
                     sendBroadcast(dataChangedIntent);
 
 
-//                    Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
-//                    intent.putExtra("username", nameFromDB);
-//                    intent.putExtra("passEdit",passFromDB);
-//                    intent.putExtra("phoneEdit",phoneUser);
-//                    startActivity(intent);
                 }
             }
 

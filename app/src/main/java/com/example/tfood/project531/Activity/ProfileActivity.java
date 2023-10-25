@@ -80,15 +80,12 @@ public class ProfileActivity extends AppCompatActivity implements OnDataChangeLi
         logOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Đăng xuất người dùng (nếu cần)
-                // Ví dụ: Xóa thông tin người dùng đã lưu trong SharedPreferences, cài đặt trạng thái đăng nhập về false, vv.
                 // Tạo Intent để chuyển đến LoginActivity
                 Intent loginIntent = new Intent(ProfileActivity.this, LoginActivity.class);
                 // Xóa tất cả các Activity trướng LoginActivity khỏi ngăn xếp (back stack)
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 // Mở LoginActivity và đồng thời đóng ProfileActivity
                 startActivity(loginIntent);
-
                 // Đóng ProfileActivity
                 finish();
             }
@@ -131,8 +128,10 @@ public class ProfileActivity extends AppCompatActivity implements OnDataChangeLi
                 if(snapshot.exists()){
                     String nameFromDB = snapshot.child("name").getValue(String.class);
                     String passFromDB = snapshot.child("password").getValue(String.class);
+                    String addressFromDB = snapshot.child("address").getValue(String.class);
                     titleName.setText(nameFromDB);
                     profilePass.setText(passFromDB);
+                    profileMyAddress.setText(addressFromDB);
                 }
             }
 
@@ -198,12 +197,14 @@ public class ProfileActivity extends AppCompatActivity implements OnDataChangeLi
                     DataSnapshot userSnapshot = snapshot.getChildren().iterator().next();
                     String nameFromDB = userSnapshot.child("name").getValue(String.class);
                     String passFromDB = userSnapshot.child("password").getValue(String.class);
+                    String addressFromDB = userSnapshot.child("address").getValue(String.class);
 
                     Intent intent1 = new Intent(ProfileActivity.this, EditProfileActivity.class);
 
                     intent1.putExtra("name", nameFromDB);
                     intent1.putExtra("pass",passFromDB);
                     intent1.putExtra("phone",phoneUser);
+                    intent1.putExtra("address", addressFromDB);
 
                     startActivity(intent1);
 

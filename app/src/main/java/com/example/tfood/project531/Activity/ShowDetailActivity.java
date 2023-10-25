@@ -85,7 +85,6 @@ public class ShowDetailActivity extends AppCompatActivity {
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                foodId = foodId.replace("0","");
                 DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("Cart").child(Common.currentUser.getPhone());
                 cartRef.child(foodId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
