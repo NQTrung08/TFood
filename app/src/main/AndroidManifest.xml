@@ -42,9 +42,9 @@
         <activity
             android:name=".project531.Activity.HomeActivity"
             android:exported="false" />
-        <activity
-            android:name=".project531.Model.User"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".project531.Model.User"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".project531.Activity.SignupActivity"
             android:exported="false" />

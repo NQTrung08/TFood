@@ -7,8 +7,8 @@ public class User {
     private String address;
 
     public User() {
-
     }
+
     public User(String name, String password, String phone, String address) {
         this.name = name;
         this.password = password;
