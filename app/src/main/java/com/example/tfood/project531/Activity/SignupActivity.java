@@ -46,6 +46,9 @@ public class SignupActivity extends AppCompatActivity {
                 final String passTxt = edtPassSignup.getText().toString();
                 final String repassTxt = edtRePassSignup.getText().toString();
                 final String phoneNumberPattern = "^[0-9]+$";
+//                final String phoneNumberPattern = "^(0[0-9]{9})$"; //CHECK PHONE VIETNAMESE
+
+
 //                kiểm tra user đã điền đầy đủ thông tin
                 if(nameTxt.isEmpty() || phoneTxt.isEmpty() || passTxt.isEmpty() || repassTxt.isEmpty()) {
                     Toast.makeText(SignupActivity.this, "Please fill all information", Toast.LENGTH_SHORT).show();

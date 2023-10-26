@@ -66,7 +66,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                startActivity(new Intent(OrderDetailActivity.this, HomeActivity.class));
+                startActivity(new Intent(OrderDetailActivity.this, ProfileActivity.class));
             }
         });
     }

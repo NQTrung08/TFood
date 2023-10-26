@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 public class ListFoodActivity extends AppCompatActivity {
     EditText edtSearchList;
     ImageView backListFoodBtn;
+
+    ImageView searchListFood;
     private RecyclerView.Adapter adapterListFood;
     private RecyclerView recyclerViewListFood;
     FirebaseDatabase database;
@@ -34,6 +37,7 @@ public class ListFoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product);
         backListFoodBtn = findViewById(R.id.backListFoodBtn);
+        searchListFood = findViewById(R.id.searchListFood);
 
         int selectedCategoryId = getIntent().getIntExtra("selectedCategoryId", 1);
         recyclerViewListFood(selectedCategoryId);
@@ -43,6 +47,13 @@ public class ListFoodActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Sử dụng phương thức finish để kết thúc Activity hiện tại và quay trở lại trang trước đó
                 finish();
+            }
+        });
+
+        searchListFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ListFoodActivity.this, SearchActivity.class));
             }
         });
     }

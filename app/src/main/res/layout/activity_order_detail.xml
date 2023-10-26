@@ -43,7 +43,7 @@
                     android:id="@+id/ConfirmTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="20dp"
                     android:text="Your Order"
                     android:textAllCaps="false"
                     android:textColor="#000"
