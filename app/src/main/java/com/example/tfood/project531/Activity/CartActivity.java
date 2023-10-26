@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
     private double total = 0;
+    private int totalQuantity = 0;
     RecyclerView recyclerViewCart;
     RecyclerView.Adapter adapterCart;
     TextView totalPrice;
@@ -66,19 +67,21 @@ public class CartActivity extends AppCompatActivity {
                 cartList.clear();
 
                 total = 0;
+                totalQuantity = 0;
                 for (DataSnapshot cartSnapshot : dataSnapshot.getChildren()) {
                     Cart cartItem = cartSnapshot.getValue(Cart.class);
                     if (cartItem != null) {
                         cartList.add(cartItem);
                         total += cartItem.getTotalPrice();
 
+
                         // Lấy tên món ăn và tổng số sản phẩm
-                        String foodName = cartItem.getFoodName();
-                        int quantity = cartItem.getQuantity();
+//                        String foodName = cartItem.getFoodName();
+//                        int quantity = cartItem.getQuantity();
 
                         // Thêm vào danh sách
-                        foodNames.add(foodName);
-                        quantities.add(quantity);
+                        foodNames.add(String.valueOf(cartItem.getFoodName()));
+                        quantities.add(cartItem.getQuantity());
                     }
                 }
 

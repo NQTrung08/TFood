@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:editTextColor">#000000</item> <!-- Đặt màu văn bản nhập là màu đen -->
+    </style>
+</resources>

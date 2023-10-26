@@ -2,6 +2,8 @@ package com.example.tfood.project531.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tfood.R;
+import com.example.tfood.project531.Activity.CartActivity;
+import com.example.tfood.project531.Activity.ShowDetailActivity;
 import com.example.tfood.project531.Common.Common;
 import com.example.tfood.project531.Model.Cart;
 import com.google.firebase.database.DatabaseReference;
@@ -39,12 +43,36 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Cart cart = cartArrayList.get(position);
-        holder.foodName_cart.setText(cartArrayList.get(position).getFoodName());
+
+        String foodName = cart.getFoodName();
+        String foodNamesString = TextUtils.join(", ", new String[]{foodName}); // Kết hợp tất cả tên sản phẩm
+
+        // Kiểm tra chiều dài và cắt nếu cần
+        if (foodNamesString.length() > 17) {
+            foodNamesString = foodNamesString.substring(0, 15) + " ...";
+        }
+        holder.foodName_cart.setText(foodNamesString);
         holder.feeEachItem.setText("$" + cartArrayList.get(position).getFee());
         holder.totalEachItem.setText("$" + cartArrayList.get(position).getTotalPrice());
         holder.quantity_cart.setText(String.valueOf(cartArrayList.get(position).getQuantity()));
         String picUrl = cart.getFoodPic();
         Glide.with(holder.itemView.getContext()).load(picUrl).into(holder.foodPic_cart);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent foodDetailIntent = new Intent(context, ShowDetailActivity.class);
+                if(cart.getFoodId() <= 9) {
+                    foodDetailIntent.putExtra("FoodId", "0" + cart.getFoodId());
+                } else {
+
+                    foodDetailIntent.putExtra("FoodId", String.valueOf(cart.getFoodId()));
+
+                }// Gửi ID của sản phẩm
+                context.startActivity(foodDetailIntent);
+            }
+        });
 
         holder.add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +80,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 // Lấy mục giỏ hàng tương ứng với vị trí trong danh sách
                 Cart cartItem = cartArrayList.get(position);
 
-                // Tăng số lượng sản phẩm cho mục giỏ hàng này
                 int newQuantity = cartItem.getQuantity() + 1;
                 cartItem.setQuantity(newQuantity);
 
@@ -62,9 +89,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
                 // Cập nhật dữ liệu trong danh sách giỏ hàng
                 cartArrayList.set(position, cartItem);
-                // Cập nhật giao diện người dùng
                 notifyDataSetChanged(); // Cập nhật lại RecyclerView
-                // Sau đó, bạn cũng có thể cập nhật dữ liệu trong cơ sở dữ liệu Firebase nếu cần
                 // Thực hiện cập nhật dữ liệu trong Firebase
                 DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("Cart").child(Common.currentUser.getPhone());
                 cartRef.child(String.valueOf(cartItem.getFoodId())).setValue(cartItem);
@@ -76,10 +101,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onClick(View view) {
                 // Lấy mục giỏ hàng tương ứng với vị trí trong danh sách
                 Cart cartItem = cartArrayList.get(position);
-
-                // Kiểm tra số lượng sản phẩm trước khi giảm
                 if (cartItem.getQuantity() > 1) {
-                    // Giảm số lượng sản phẩm cho mục giỏ hàng này
+
                     int newQuantity = cartItem.getQuantity() - 1;
                     cartItem.setQuantity(newQuantity);
 
@@ -89,15 +112,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
                     // Cập nhật dữ liệu trong danh sách giỏ hàng
                     cartArrayList.set(position, cartItem);
-
-                    // Cập nhật giao diện người dùng
                     notifyDataSetChanged(); // Cập nhật lại RecyclerView
 
                     // Thực hiện cập nhật dữ liệu trong Firebase
                     DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("Cart").child(Common.currentUser.getPhone());
                     cartRef.child(String.valueOf(cartItem.getFoodId())).setValue(cartItem);
                 } else {
-                    // Nếu số lượng bằng 1, xóa mục khỏi giỏ hàng
+
                     cartArrayList.remove(position);
                     notifyDataSetChanged(); // Cập nhật lại RecyclerView
 

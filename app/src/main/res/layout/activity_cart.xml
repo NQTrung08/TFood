@@ -82,7 +82,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/confirmBtn"
-        android:layout_width="408dp"
+        android:layout_width="0dp"
         android:layout_height="66dp"
         android:background="@drawable/btn_orange"
         android:elevation="4dp"

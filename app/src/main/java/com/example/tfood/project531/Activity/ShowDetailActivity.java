@@ -85,6 +85,10 @@ public class ShowDetailActivity extends AppCompatActivity {
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(Integer.parseInt(foodId) <= 9){
+                    foodId = foodId.replaceFirst("^0+(?!$)", "");
+                }
+
                 DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("Cart").child(Common.currentUser.getPhone());
                 cartRef.child(foodId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -97,7 +101,7 @@ public class ShowDetailActivity extends AppCompatActivity {
                                 cartItem.setQuantity(cartItem.getQuantity() + quantityCurrent);
                                 // Cập nhật tổng giá
                                 cartItem.setTotalPrice(cartItem.getFee() * cartItem.getQuantity());
-                                cartRef.child(String.valueOf(foodId)).setValue(cartItem);
+                                cartRef.child(foodId).setValue(cartItem);
                             }
                         } else {
                             // Lấy URL hình ảnh của sản phẩm từ foodData

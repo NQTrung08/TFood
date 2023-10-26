@@ -36,12 +36,12 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         String foodNamesString = TextUtils.join(", ", foodNames); // Kết hợp tất cả tên sản phẩm
 
         // Kiểm tra chiều dài và cắt nếu cần
-        if (foodNamesString.length() > 17) {
-            foodNamesString = foodNamesString.substring(0, 17) + " ...";
+        if (foodNamesString.length() > 15) {
+            foodNamesString = foodNamesString.substring(0, 15) + " ...";
         }
 
         holder.listFoodNameOrder.setText(foodNamesString);
-        holder.numberItem.setText(String.valueOf(order.getTotalQuantities()));
+//        holder.numberItem.setText(String.valueOf(order.getTotalQuantities()));
         holder.totalFeeOrder.setText(order.getTotalOrder());
 
     }

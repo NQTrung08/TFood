@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.tfood.R;
 import com.example.tfood.project531.Adapter.FoodListAdapter;
@@ -27,6 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView recyclerSearchView;
     RecyclerView.Adapter searchAdapter;
     SearchView edtSearchView;
+    ImageView backSearch;
 
     private DatabaseReference databaseReference;
     private ArrayList<Food> searchResults ;
@@ -39,6 +41,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         edtSearchView = findViewById(R.id.edtSearchView);
+        backSearch = findViewById(R.id.backSearch);
         recyclerSearchView = findViewById(R.id.viewSearch);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -58,7 +61,6 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // Xóa kết quả tìm kiếm trước đó
                 searchResults.clear();
                 if (newText.length() >= 1) {
                     // Nếu có ít nhất 1 ký tự được nhập, thực hiện tìm kiếm
@@ -71,13 +73,24 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        backSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
 
     }
 
     private void updateSearchResults(String query) {
+//      chuyển query về chữ thường
+        final String lowerCaseQuery = query.toLowerCase();
 
-        Query searchQuery = databaseReference.orderByChild("foodName").startAt(query).endAt(query + "\uf8ff");
+//        Query searchQuery = databaseReference.orderByChild("foodName").startAt(query).endAt(query + "\uf8ff");
+        Query searchQuery = databaseReference.orderByChild("foodName");
+
         searchQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,9 +98,10 @@ public class SearchActivity extends AppCompatActivity {
                 // Duyệt qua các sản phẩm tìm được và thêm vào danh sách kết quả
                 for (DataSnapshot foodSnapshot : dataSnapshot.getChildren()) {
                     Food food = foodSnapshot.getValue(Food.class);
-                    searchResults.add(food);
+                    if(food.getFoodName().toLowerCase().contains(lowerCaseQuery)) {
+                        searchResults.add(food);
+                    }
                 }
-                // Cập nhật kết quả tìm kiếm lên giao diện
                 searchAdapter.notifyDataSetChanged();
             }
 
@@ -99,7 +113,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private  void  retrieveAllFood(){
-        // Hiển thị tất cả sản phẩm khi ô tìm kiếm trống
+        // Hiển thị tất cả sản phẩm
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -113,7 +127,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Xử lý lỗi nếu cần
+
             }
         });
     }

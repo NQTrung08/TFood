@@ -72,7 +72,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHo
                 Context context = view.getContext();
                 Intent foodDetailIntent = new Intent(context, ShowDetailActivity.class);
                 if(food.getFoodId() <= 9) {
-                    foodDetailIntent.putExtra("FoodId", "0" + String.valueOf(food.getFoodId()));
+                    foodDetailIntent.putExtra("FoodId", "0" + food.getFoodId());
                 } else {
 
                     foodDetailIntent.putExtra("FoodId", String.valueOf(food.getFoodId()));
