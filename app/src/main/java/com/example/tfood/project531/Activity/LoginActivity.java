@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtPhoneLogin;
     TextInputLayout edtPassLogin;
     Button btnLogin;
-    TextView tvSignup;
+    TextView tvSignup, forgotPassTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPhoneLogin = findViewById(R.id.edtPhoneLogin);
         edtPassLogin = findViewById(R.id.edtPasswordLogin);
         btnLogin = findViewById(R.id.btnlogin);
+        forgotPassTxt = findViewById(R.id.forgotPassTxt);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
@@ -110,6 +111,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+            }
+        });
+
+        forgotPassTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, SendOTPActivity.class));
             }
         });
 

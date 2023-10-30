@@ -16,6 +16,14 @@
         android:theme="@style/Theme.TFood"
         tools:targetApi="31">
         <activity
+            android:name=".project531.Activity.VerifyOTPActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".project531.Activity.SendOTPActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".project531.Activity.SearchActivity"
             android:exported="false" />
         <activity
@@ -41,10 +49,9 @@
             android:exported="false" />
         <activity
             android:name=".project531.Activity.HomeActivity"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".project531.Model.User"-->
-<!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".project531.Model.User" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".project531.Activity.SignupActivity"
             android:exported="false" />
