@@ -29,10 +29,12 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
     private EditText inputCode1, inputCode2, inputCode3, inputCode4, inputCode5, inputCode6;
     private String verificationId;
+    String phoneNumber = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_otpactivity);
+        String fullMobile = getIntent().getStringExtra("mobile");
 
         TextView textMobile = findViewById(R.id.textMobile);
         textMobile.setText(String.format(
@@ -87,7 +89,8 @@ public class VerifyOTPActivity extends AppCompatActivity {
                                     progressBar.setVisibility(View.GONE);
                                     buttonVerify.setVisibility(View.VISIBLE);
                                     if (task.isSuccessful()) {
-                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), SetNewPasswordActivity.class);
+                                        intent.putExtra("mobile", fullMobile);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                     } else {

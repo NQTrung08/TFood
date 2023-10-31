@@ -11,6 +11,9 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="login">Login</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
+    <string name="new_credentials">New Credentials</string>
+    <string name="new_credentials_detail">Your identity has been verified set your new password</string>
+    <string name="new_password">New Password</string>
 
 
 </resources>
